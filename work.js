@@ -10,7 +10,6 @@ const port = process.env.PORT || 3001
 const app = express();
 const server = http.createServer(app);
 const io = socketIo(server);
-const ssh = "ssh -i ~/pri_98.pem -p 6000 root@111.67.194.35";
 
 app.use(cors());
 
@@ -31,21 +30,21 @@ io.on("connection", socket => {
 });
 
 app.get('/', function(req, res) {
-	var str = exec(ssh + " 'python3 ~/AutoXueXi/dingding-come.py'");
+	var str = exec('python3 ~/AutoXueXi/dingding-come.py');
 	var result = {};
 	result.info = str.toString('utf8').trim();
 	res.send(result);
 });
 
 app.get('/openAuto', function(req, res) {
-	var str = exec(ssh + " '~/AutoXueXi/OpenAuto.sh'");
+	var str = exec('~/AutoXueXi/OpenAuto.sh');
 	var result = {};
 	result.info = str.toString('utf8').trim();
 	res.send(result);
 });
 
 app.get('/closeAuto', function(req, res) {
-	var str = exec(ssh + " '~/AutoXueXi/CloseAuto.sh'");
+	var str = exec('~/AutoXueXi/CloseAuto.sh');
 	var result = {};
 	result.info = str.toString('utf8').trim();
 	res.send(result);
@@ -53,8 +52,9 @@ app.get('/closeAuto', function(req, res) {
 
 app.get("/go", function(req, res) {
 	try {
-		var gocmdstr = "ssh";
-		util.run_cmd(gocmdstr, ['-i', '~/pri_98.pem', '-p', '6000', 'root@111.67.194.35', 'python3 ~/AutoXueXi/dingding-go.py'], "go-incoming data", function() {});
+		console.log("签退")
+		var gocmdstr = "python3";
+		util.run_cmd(gocmdstr, ['/root/AutoXueXi/dingding-go.py'], "go-incoming data", function() {});
 		var result = {};
 		result.info = "ok";
 		res.send(result);
@@ -65,8 +65,9 @@ app.get("/go", function(req, res) {
 
 app.get("/come", function(req, res) {
 	try {
-		var gocmdstr = "ssh";
-		util.run_cmd(gocmdstr, ['-i', '~/pri_98.pem', '-p', '6000', 'root@111.67.194.35', 'python3 ~/AutoXueXi/dingding-come.py'], "go-incoming data", function() {});
+		console.log("签到")
+		var gocmdstr = "python3";
+		util.run_cmd(gocmdstr, ['/root/AutoXueXi/dingding-come.py'], "go-incoming data", function() {});
 		var result = {};
 		result.info = "ok";
 		res.send(result);
@@ -76,12 +77,16 @@ app.get("/come", function(req, res) {
 });
 
 app.get("/autoCheck", function(req, res) {
-	var str = exec(ssh + " 'bash ~/AutoXueXi/AutoCheck.sh'");
+	var str = exec('bash ~/AutoXueXi/AutoCheck.sh');
 	var result = {};
 	result.info = str.toString('utf8').trim();
 	console.log(result);
 	res.send(result);
 });
+
+app.get("/test",function(req,res){
+	res.send("ok");
+})
 
 server.listen(port, function() {
 	console.log('listening on port:%s', port);

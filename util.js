@@ -5,10 +5,17 @@ function run_cmd(cmd,args,infoFlag, callBack ) {
     var child = spawn(cmd,args);
     var resp = "end";
 
-    child.stdout.on('data', function (buffer) {
-			console.log(buffer.toString());
+    child.stdout.on('data', (buffer) => {
+      console.log('------');
+			console.log(buffer.toString('utf8'));
       socket.emit(infoFlag,buffer.toString());
     });
+
+    child.stderr.on('data',(data) => {
+      console.error(`ps stderr: ${data}`);
+      socket.emit(infoFlag,`ps stderr: ${data}`)
+    });
+
     child.stdout.on('end', function() { callBack (resp) });
 }
 
