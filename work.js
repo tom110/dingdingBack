@@ -21,6 +21,11 @@ io.on("connection", socket => {
 			num: data
 		});
 	});
+	socket.on("incoming data-temperature", (data) => {
+		socket.broadcast.emit("outgoing data-temperature", {
+			num: data
+		});
+	});
 	socket.on("go-incoming data", (data) => {
 		socket.broadcast.emit("go-outging data", {
 			num: data
@@ -31,6 +36,14 @@ io.on("connection", socket => {
 
 app.get('/', function(req, res) {
 	var str = exec('python3 ~/AutoXueXi/dingding-come.py');
+	var result = {};
+	result.info = str.toString('utf8').trim();
+	res.send(result);
+});
+
+app.get('/camera',function(req,res){
+	console.log('camera')
+	var str = exec('python3 ~/AutoXueXi/camera.py');
 	var result = {};
 	result.info = str.toString('utf8').trim();
 	res.send(result);
