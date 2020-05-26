@@ -5,7 +5,7 @@ var http = require("http");
 var util = require("./util");
 var cors = require('cors');
 
-const port = process.env.PORT || 3001
+const port = process.env.PORT || 3000
 
 const app = express();
 const server = http.createServer(app);

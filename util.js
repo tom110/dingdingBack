@@ -1,4 +1,4 @@
-let socket = require("socket.io-client")('http://127.0.0.1:3001');
+let socket = require("socket.io-client")('http://127.0.0.1:3000');
 
 function run_cmd(cmd,args,infoFlag, callBack ) {
     var spawn = require('child_process').spawn;
